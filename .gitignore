@@ -1,0 +1,16 @@
+# Environment files
+.env
+.qodo
+
+# Python cache
+__pycache__/
+
+# Jupyter notebooks
+*.ipynb
+
+# Output folders
+output_csvs/
+CSVs/
+
+# Drafts or temporary files
+Draft/
