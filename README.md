@@ -6,8 +6,7 @@ An AI-powered system for intelligent product categorization, attribute extractio
 
 This project provides a comprehensive 8-level processing pipeline that transforms raw product data into richly annotated, searchable, and multilingual e-commerce listings using AI/LLM technology.
 
-
-![img](unnamed.jpg)
+<img width="819" height="689" alt="image" src="https://github.com/user-attachments/assets/76289815-c1be-48e4-8eeb-70fc5a5fbdd2" />
 
 ## Features
 
