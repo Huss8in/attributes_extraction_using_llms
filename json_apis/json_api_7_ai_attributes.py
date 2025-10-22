@@ -1,6 +1,6 @@
 """
-JSON API #7: AI Attributes Extraction
-Accepts JSON input and returns AI attributes as string
+JSON API #7: AI Attributes Extraction (Restricted)
+Accepts JSON input and returns AI attributes as string for specific categories only
 """
 
 from flask import Flask, request, jsonify
@@ -43,9 +43,10 @@ INSTRUCTIONS:
 - Fill only known attributes; leave others empty
 - Use concise English values
 - Gender: choose strictly from ["Women", "Men", "Unisex women, Unisex men", "Girls", "Boys", "Unisex girls, unisex boys"]
-- Generic Name: use the item category if possible
+- Generic Name: identify the main item (e.g. if "Matelda Chocolate cake 120 grams" → Generic Name: "cake")
+- Product Name: the product name without size/quantity (e.g. "Matelda Chocolate cake")
 - Color: infer from name or description
-- Product Name: concise, not verbatim copy of item name
+- Keep the output clean and structured exactly as below.
 
 OUTPUT FORMAT (exactly, no deviations):
 
@@ -80,7 +81,7 @@ Output ONLY the above format. NO extra lines or explanations.
 @app.route('/extract', methods=['POST'])
 def extract():
     """
-    Extract AI attributes for item
+    Extract AI attributes for an item.
 
     Input JSON:
     {
@@ -90,11 +91,6 @@ def extract():
         "shopping_category": "fashion",
         "shopping_subcategory": "casual wear",
         "item_category": "t-shirt"
-    }
-
-    Returns:
-    {
-        "ai_attributes": "Gender: Women\nAge: Adult\n..."
     }
     """
     try:
@@ -107,12 +103,27 @@ def extract():
         shopping_subcategory = data.get('shopping_subcategory', '')
         item_category = data.get('item_category', '')
 
+        # ✅ Restrict to specific categories
+        allowed_categories = ["fashion", "beauty", "home and garden"]
+        if shopping_category.lower().strip() not in allowed_categories:
+            return jsonify({
+                "success": False,
+                "message": f"Item skipped — shopping_category '{shopping_category}' is not allowed. "
+                           f"Allowed categories: {', '.join(allowed_categories)}",
+                "ai_attributes": ""
+            }), 200
+
+        # ✅ Extract attributes only for allowed categories
         attributes = extract_ai_attributes(
             item_name, description, vendor_category,
             shopping_category, shopping_subcategory, item_category
         )
 
-        return jsonify({"ai_attributes": attributes})
+        return jsonify({
+            "success": True,
+            "message": "AI attributes extracted successfully.",
+            "ai_attributes": attributes
+        }), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -142,7 +153,7 @@ def index():
 
 if __name__ == '__main__':
     print("\n" + "="*60)
-    print("JSON AI Attributes Extraction API")
+    print("JSON AI Attributes Extraction API (Restricted Categories)")
     print("="*60)
     print("\nEndpoints:")
     print("  POST /extract - Extract AI attributes for item")
