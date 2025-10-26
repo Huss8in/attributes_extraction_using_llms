@@ -23,36 +23,59 @@ def run_model(prompt):
     return r.json()["response"].strip()
 
 
-def generate_skw(item_name, description, item_category):
-    """Generate strict Search Keywords (SKW) for an item using the item_category from CSV"""
-
-    input_text = f"Item: {item_name}\nDescription: {description}\nItem Category: {item_category}"
+def generate_skw(item_name, item_category):
+    """Fast and accurate SKW generator ensuring core product noun first"""
 
     prompt = f"""
 You are a strict e-commerce keyword generator.
-Generate exactly 5 keyword phrases for the item below. FOLLOW THESE RULES STRICTLY:
+Generate concise keyword phrases (1 to 5 only) that customers would type when shopping for an item online.
+Use ONLY the item name and category to decide what keywords make sense.
 
-Item Data:
-{input_text}
+Item Name: {item_name}
+Item Category: {item_category}
 
 Rules:
-1. Output exactly 5 phrases separated by commas, no numbering or extra text
-2. The first phrase must be ONLY the item category: {item_category}
-3. All other phrases must end with the item category: {item_category}
-4. Each phrase must be maximum 3 words
-5. Format: modifier + modifier + item category
-6. Use tangible features, proper nouns, or item attributes as modifiers
-7. Do NOT include sentiments, numbers, dates, symbols, or extra words
-8. Return everything in lowercase
-9. STRICTLY follow the format. Do not add explanations or newlines
-
-Output ONLY:
+- Each keyword phrase must contain the core product noun (like pants, top, jacket, dress, etc.).
+- The first keyword phrase MUST be only the core product noun.
+- Avoid adjectives or promotional words unless part of the item name.
+- Each phrase should be short (max 3 words).
+- Output 1 to 5 keyword phrases, comma-separated, in Title Case.
+- Output ONLY the keyword phrases.
 """
 
     result = run_model(prompt)
+    print("*************************")
+    print(result)
+    print("*************************")
+
+    # Normalize and split
     result = result.replace("\n", "").replace('"', "").replace("'", "").strip().lower()
-    print(f"MODEL RAW RESULT: {result}")
-    return result
+    keywords = [k.strip() for k in result.split(",") if k.strip()]
+
+    # Identify the main product noun (last word of item name)
+    product_noun = item_name.lower().replace("-", " ").split()[-1]
+
+    # Filter to include only phrases that contain the noun
+    keywords = [kw for kw in keywords if product_noun in kw]
+
+    # Always ensure noun is first
+    if not keywords or keywords[0] != product_noun:
+        keywords = [product_noun] + [kw for kw in keywords if kw != product_noun]
+
+    # Remove duplicates while preserving order, limit to 5
+    seen = set()
+    final_keywords = []
+    for kw in keywords:
+        if kw not in seen:
+            seen.add(kw)
+            final_keywords.append(kw)
+        if len(final_keywords) == 5:
+            break
+
+    # Return formatted string
+    final_result = ", ".join([kw.title() for kw in final_keywords])
+    print(f"MODEL RAW RESULT: {final_result}")
+    return final_result
 
 
 

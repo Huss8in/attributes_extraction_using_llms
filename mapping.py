@@ -6,7 +6,7 @@ shoppingCategory = [
 ]
 # ------------------------------------------------------------------------------------------------------------------------------ #
 # Level 2: shoppingSubcategory
-fashion_shoppingSubcategory = ["baby clothes", "undergarments", "accessories", "casual wear", "home decor", "beach wear", "outerwear", "neckwear and scarf", "formal wear", "sports wear", "swimwear", "designer wear", "sports", "outdoor sports", "footwear", "martial arts", "sleepwear", "medical wear", "kids wear", "jewelry", "religious wear", "fitness and training", "maternity", "water sports", "eyewear"]
+fashion_shoppingSubcategory = ["sportswear", "casual wear", "beach wear", "maternity", "undergarments", "designer wear", "plus sizes", "medical wear", "sleepwear", "swimwear", "footwear", "jewelry", "eyewear", "religious wear", "baby clothes", "accessories"]
 beauty_shoppingSubcategory = ["skincare", "haircare", "fragrances", "cosmetics"]
 stationary_shoppingSubcategory = ["arts and crafts", "stationary accessories", "office supplies", "stationary supplies", "school supplies"]
 automotive_shoppingSubcategory = ["auto care", "auto accessories", "motorcycle care"]
@@ -47,10 +47,51 @@ shoppingSubcategory_map = {
 # ------------------------------------------------------------------------------------------------------------------------------ #
 # Level 3: itemCategory
 fashion_itemCategory = {
-    "casual wear": ["apron", "top", "trousers", "blouse", "t-shirt", "shirt", "vest", "pants", "shorts", "leggings", "skirt", "dress", "outfit", "skort"],
-    "beach wear": ["bathing cover"],
-    "outerwear": ["sweatshirt", "sweater", "tank top", "jacket", "coat", "overalls", "jeans", "kimono"],
-    "footwear": ["sandals", "slippers", "boot", "sports shoe", "shoe", "stocking", "sock", "shoe accessory"]
+    # Shared mapping for multiple fashion subcategories
+    **dict.fromkeys(
+        [
+            "sportswear", "casual wear", "beach wear", "maternity",
+            "undergarments", "designer wear", "plus sizes",
+            "medical wear", "sleepwear"
+        ],
+        [
+            "top", "outerwear", "trousers", "skirt", "underwear",
+            "suit", "robe", "uniform", "pajamas", "dress", "outfit"
+        ]
+    ),
+
+    # Unique mappings for other categories
+    "swimwear": ["bathing cover", "swimsuit"],
+
+    "footwear": [
+        "sandal", "slipper", "stocking", "sock", "shoe accessory",
+        "boot", "sports shoe", "shoe"
+    ],
+
+    "jewelry": [
+        "earring", "necklace", "bracelet", "ring", "broche",
+        "tie pin", "pendant", "cufflink", "jewelry set",
+        "head ornament", "jewelry box"
+    ],
+
+    "eyewear": ["glasses", "sunglasses"],
+
+    "religious wear": [
+        "islamic religious wear", "christian religious wear"
+    ],
+
+    "baby clothes": [
+        "onesie", "baby gown", "bloomers", "diaper cover",
+        "babygrow", "baby sock", "diaper shirt", "baby mitten",
+        "romper", "baby accessory", "lap tee", "baby leggings",
+        "baby shoe", "jumpsuit"
+    ],
+
+    "accessories": [
+        "umbrella", "wallet", "hand fan", "watch", "belt",
+        "neckwear and scarf", "bag", "headwear",
+        "hair accessory", "glove"
+    ]
 }
 
 beauty_itemCategory = {
@@ -227,6 +268,8 @@ fashion_itemSubcategory = {
     "top": ["kimono", "sweatshirt", "sweater", "tank top", "blouse", "t-shirt", "shirt"],
     "outerwear": ["jacket", "blazer", "coat", "vest"],
     "trousers": ["overalls", "pants", "jeans", "shorts", "leggings"],
+    "skirt": ["skort"],
+    "underwear": ["undershirt", "bra", "panty", "boxers", "briefs", "nightgown", "camisole", "babydoll", "slip", "corset"],
     "boot": ["work boot", "riding boot", "sports boot", "combat boot", "snow boot", "rain boot"],
     "sports shoe": ["tennis shoe", "cycling shoe", "cleats", "golf shoe", "walking shoe", "basketball shoe", "cross trainers", "running shoe"],
     "shoe": ["dress shoe", "casual shoe", "heels", "flats"],
@@ -373,4 +416,3 @@ itemSubcategory_map = {
     "entertainment": entertainment_itemSubcategory,
     "kids": kids_itemSubcategory
 }
-    

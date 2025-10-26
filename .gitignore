@@ -2,9 +2,16 @@
 .env
 .qodo
 
+.claude
+
+.gitignore
+
+
 # Python cache
 __pycache__/
 
+
+process_all_csvs.py
 # Jupyter notebooks
 *.ipynb
 
@@ -14,3 +21,6 @@ CSVs/
 
 # Drafts or temporary files
 Draft/
+
+
+main.ipynb

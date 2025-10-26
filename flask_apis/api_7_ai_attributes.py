@@ -45,9 +45,10 @@ INSTRUCTIONS:
 - Fill only known attributes; leave others empty
 - Use concise English values
 - Gender: choose strictly from ["Women", "Men", "Unisex women, Unisex men", "Girls", "Boys", "Unisex girls, unisex boys"]
-- Generic Name: use the item category if possible
+- Generic Name: identify the main item (e.g. if "Matelda Chocolate cake 120 grams" → Generic Name: "cake")
+- Product Name: the product name without size/quantity (e.g. "Matelda Chocolate cake")
 - Color: infer from name or description
-- Product Name: concise, not verbatim copy of item name
+- Keep the output clean and structured exactly as below.
 
 OUTPUT FORMAT (exactly, no deviations):
 
@@ -72,6 +73,7 @@ Country of origin:
 
 Output ONLY the above format. NO extra lines or explanations.
 """
+
 
     result = run_model(prompt)
     result = result.replace("\r", "").strip()
@@ -106,8 +108,22 @@ def get_ai_attributes():
             df.columns = df.iloc[0]
             df = df.drop([0, 1]).reset_index(drop=True)
 
-        # Extract AI attributes
-        df["AI_Attributes"] = df.apply(
+        # Filter for specific shopping categories
+        allowed_categories = ["fashion", "beauty", "home and garden"]
+        df["shoppingCategory_lower"] = df["shoppingCategory"].astype(str).str.lower()
+
+        filtered_df = df[df["shoppingCategory_lower"].isin(allowed_categories)].copy()
+
+        if filtered_df.empty:
+            return jsonify({
+                "success": False,
+                "message": "No rows match the specified shopping categories (fashion, beauty, home and garden).",
+                "output_path": None,
+                "processed_rows": 0
+            }), 200
+
+        # Extract AI attributes only for allowed rows
+        filtered_df["AI_Attributes"] = filtered_df.apply(
             lambda row: extract_ai_attributes(
                 row.get("Item (EN)", ""),
                 row.get("Description (EN)", ""),
@@ -119,14 +135,17 @@ def get_ai_attributes():
             axis=1
         )
 
-        df.to_csv(output_path, index=False, encoding="utf-8-sig")
+        # Save results
+        filtered_df.to_csv(output_path, index=False, encoding="utf-8-sig")
 
+        # ✅ Proper return
         return jsonify({
             "success": True,
-            "message": "AI attributes extraction completed successfully",
+            "message": "AI attributes extraction completed successfully for allowed categories (fashion, beauty, home and garden).",
             "output_path": output_path,
-            "processed_rows": len(df)
-        })
+            "processed_rows": len(filtered_df)
+        }), 200
+
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

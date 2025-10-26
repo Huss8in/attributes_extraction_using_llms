@@ -1,0 +1,21 @@
+Item (EN),Category/Department (EN),Description (EN),Variant Name
+Classic Hotdog,Hotdog,,default
+Original Burger,Burger,Egg burger,default
+Saving Offer,Value Meals,"2 liver, 2 sausages and 2 hawawshi",default
+Tony's Combo,Value Meals,1 sausage - 1 liver - 1 kofta - 1 fries + cola,default
+Meat Shawerma,Shawerma,"Thinly sliced marinated meat, slow-cooked to perfection, wrapped in soft bread",Sandwich
+Chicken Shawerma,Shawerma,"Made with tender and succulent pieces of marinated chicken, grilled to perfection, accompanied by a fresh and zesty array of vegetables and sauces, delivering an irresistible culinary journey to your taste buds.",Sandwich
+Chicken Shawerma,Shawerma,"Made with tender and succulent pieces of marinated chicken, grilled to perfection, accompanied by a fresh and zesty array of vegetables and sauces, delivering an irresistible culinary journey to your taste buds.",1/2 Dozen
+Baladi Hawawshi,Hawawshi,"Made of spiced minced beef and lamb, stuffed into freshly baked bread.",1/2 Dozen
+Baladi Hawawshi,Hawawshi,"Made of spiced minced beef and lamb, stuffed into freshly baked bread.",Dozen
+Kofta,Oriental,"Made with succulent and juicy meatballs, infused with a blend of aromatic spices and herbs",1/2 Dozen
+Garlic Dip,Appetizers,Made with fresh garlic served as a dip.,default
+Red Bull,Drinks,"Made with a blend of caffeine, taurine, and B-group vitamins",default
+Tarwika Meal,Ramadan Menu,Chicken leg - kofta hati - fries - basmati rice - garlic sauce - pickles - ketchup packet or tahini - shami bread - Max cola - dates.,default
+Economic Chicken Shawarma Meal,Ramadan Menu,Chicken shawarma - fries - basmati rice - garlic sauce - pickles - shami bread - Max cola - dates.,default
+Economic Grilled Kofta Meal,Ramadan Menu,Kofta hati - fries - basmati rice - garlic sauce - pickles - ketchup packet or tahini - shami bread - Max cola - dates.,default
+Offer 2,2+1 Offers,"Liver, sausage hawawshi, fries, Maxi cola.",default
+Tonny,Chicken,Big tasty sauce + lettuce + pickles + 3 chicken strips + BBQ sauce.,default
+Pickle,Sides,,default
+Garlic Sauce,Sides,,default
+Maxi Cola,Sides,,default

@@ -24,35 +24,54 @@ def run_model(prompt):
 
 
 def generate_dsw(item_name, description, item_category):
-    """Generate strict Description Search Words (DSW) for an item"""
-
-    input_text = f"Item: {item_name}\nDescription: {description}\nItem Category: {item_category}"
-
+    """Generate strict and structured Description Search Words (DSW) for an item"""
+    
     prompt = f"""
-You are a strict e-commerce description keyword generator.
-Generate 5-10 keyword phrases for the item below. FOLLOW THESE RULES STRICTLY:
+You are a strict e-commerce keyword phrase generator.
 
-Item Data:
-{input_text}
+Create 3 to 10 search keyword phrases based on the following rules:
 
-Rules:
-1. Output phrases separated by commas, no numbering, bullets, or extra text
-2. Each phrase must end with the item category: {item_category}
-3. Include exactly one phrase with only the item category
-4. Each phrase must be ≤3 words
-5. Format: modifier + modifier + item category
-6. Modifiers = tangible features, functional attributes, or proper nouns
-7. Do NOT include sentiments, opinions, numbers, dates, symbols, or abbreviations
-8. Return everything in lowercase
-9. STRICTLY follow the format. Do not add explanations or newlines
+Step One: Generate basic and simple search phrases customers would type when shopping for the item online.
+To do Step One, define:
+--Search keyword phrases = adjective-noun pairings
+--Adjectives = attributes
+--Attributes = modifiers
+--Modifiers = functional, tangible or physical features and/or proper nouns (names or brands)
+--Nouns = item names
+--Search Keyword Format = modifier + modifier + noun
 
-Output ONLY:
+Step Two: Eliminate Unnecessary Adjectives, Numbers and/or Symbols.
+To do Step Two, recognize as unnecessary:
+--All sentiments, opinions, qualitative or subjective adjectives
+--All non-words, acronyms, abbreviations, numbers, dates, model numbers, or symbols
+
+Step Three: Limit each phrase to be no longer than three tokens.
+To do Step Three, use this formula:
+Search Keyword Phrase = modifier + modifier + noun
+
+Additional Rules:
+1. Each phrase must end with the main product noun from the item name (not the category).
+2. Include exactly one phrase that is only the product noun itself.
+3. Use only meaningful tangible attributes from the description.
+4. Avoid repetition and unnecessary filler phrases.
+5. Output between 3 and 10 phrases depending on relevance.
+6. Phrases must be separated by commas, with no numbering, bullets, or extra text.
+
+Generate the search keyword phrases from this data below:
+
+Item Name: {item_name}
+Description: {description}
+Item Category: {item_category}
+
+Output ONLY the keyword phrases, comma-separated, no extra text:
 """
 
     result = run_model(prompt)
+    # Normalize output cleanly
     result = result.replace("\n", "").replace('"', "").replace("'", "").strip().lower()
     print(f"MODEL RAW RESULT: {result}")
     return result
+
 
 
 @app.route('/get_dsw', methods=['POST'])
